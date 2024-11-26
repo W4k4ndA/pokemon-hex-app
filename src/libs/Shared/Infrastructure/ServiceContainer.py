@@ -10,11 +10,10 @@ pokemon_repository = APIPokemonRepository()
 
 
 ServiceContainer = SimpleNamespace(
-    pokemon = SimpleNamespace(
-        get_all = GetPokemonAll(pokemon_repository),
-        get_by_id = GetPokemonById(pokemon_repository),
-        get_by_name = GetPokemonByName(pokemon_repository),
-        filter_by_type = FilterPokemonByType(pokemon_repository)
+    pokemon=SimpleNamespace(
+        get_all=GetPokemonAll(pokemon_repository),
+        get_by_id=GetPokemonById(pokemon_repository),
+        get_by_name=GetPokemonByName(pokemon_repository),
+        filter_by_type=FilterPokemonByType(pokemon_repository)
     )
 )
-

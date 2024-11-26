@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from ..Entities.PokemonEntity import PokemonEntity
 
+
 class IPokemonRepository(ABC):
     @abstractmethod
     def get_pokemon_by_id(self, id: int) -> PokemonEntity:
