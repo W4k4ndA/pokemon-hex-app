@@ -1,9 +1,10 @@
-import asyncio
 import aiohttp
 from typing import List
 from ..domain.Entities.PokemonEntity import PokemonEntity
 from ..domain.Interfaces.IPokemonRepository import IPokemonRepository
 import requests
+from PIL import Image
+from io import BytesIO
 
 
 class APIPokemonRepository(IPokemonRepository):
@@ -53,6 +54,9 @@ class APIPokemonRepository(IPokemonRepository):
     def __get_url_sync(self, url):
         response = requests.get(url)
         data = response.json()
+        pokemon_image_response = requests.get(data['sprites']['front_default'])
+        pokemon_image = Image.open(BytesIO(pokemon_image_response.content))
+        data["sprites"]["front_default"] = pokemon_image
         return data
 
     def __map_to_entity(self, data: dict) -> PokemonEntity:

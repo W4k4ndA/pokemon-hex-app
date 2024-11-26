@@ -4,6 +4,7 @@ import tkinter as tk
 import tkinter.ttk as ttk
 import guiui as baseui
 from libs.Pokemon.infrastructure.TKinterPokemonController import TKinterPokemonController
+from PIL import Image, ImageTk
 
 
 class PokemonGui(baseui.PokemonGUIUI):
@@ -26,6 +27,15 @@ class PokemonGui(baseui.PokemonGUIUI):
             pokemon.name, pokemon.type, pokemon.weight, pokemon.abilities)
         self.info_text.set("")
         self.info_text.set(text)
+
+        pokemon.image_bytearray = pokemon.image_bytearray.resize((200, 200))
+        image_data = pokemon.image_bytearray
+
+        image_tk = ImageTk.PhotoImage(image_data, size=(100, 100))
+
+        self.img_data.delete("all")
+        self.img_data.create_image(130, 150, image=image_tk)
+        self.img_data.image = image_tk
 
 
 if __name__ == "__main__":
