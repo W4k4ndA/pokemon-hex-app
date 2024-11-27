@@ -4,11 +4,11 @@ from ..Entities.PokemonEntity import PokemonEntity
 
 class IPokemonRepository(ABC):
     @abstractmethod
-    def get_pokemon_by_id(self, id: int) -> PokemonEntity:
+    def get_pokemon_by_id(self, id: int) -> PokemonEntity | None:
         pass
 
     @abstractmethod
-    def get_pokemon_by_name(self, name: str) -> PokemonEntity:
+    def get_pokemon_by_name(self, name: str) -> PokemonEntity | None:
         pass
 
     @abstractmethod

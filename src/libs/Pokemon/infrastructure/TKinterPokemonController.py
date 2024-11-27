@@ -1,6 +1,6 @@
 from tkinter import *
 from tkinter import messagebox
-from tkinter import ttk
+from ..domain.Errors.PokemonNotFoundError import PokemonNotFoundError
 from ..domain.Entities.PokemonEntity import PokemonEntity
 from ...Shared.Infrastructure.ServiceContainer import ServiceContainer
 
@@ -8,11 +8,20 @@ from ...Shared.Infrastructure.ServiceContainer import ServiceContainer
 class TKinterPokemonController:
 
     def get_pokemon_by_name(self, name: str) -> PokemonEntity | None:
-        pokemon = ServiceContainer.pokemon.get_by_name.run(name)
+        try:
+            pokemon = ServiceContainer.pokemon.get_by_name.run(name)
+        except PokemonNotFoundError as error:
+            messagebox.showerror(
+                error, "There is no pokemon with name %s" % (name.upper()))
+
         return pokemon
 
     def get_pokemon_by_id(self, id: int) -> PokemonEntity | None:
-        pokemon = ServiceContainer.pokemon.get_by_id.run(id)
+        try:
+            pokemon = ServiceContainer.pokemon.get_by_id.run(id)
+        except PokemonNotFoundError as error:
+            messagebox.showerror(
+                str(error), "There is no pokemon with id %s" % (id))
         return pokemon
 
     def filter_pokemon_by_type(self, type: str) -> list[PokemonEntity]:

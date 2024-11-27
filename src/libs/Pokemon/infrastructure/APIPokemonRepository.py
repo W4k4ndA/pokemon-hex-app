@@ -1,6 +1,7 @@
 import aiohttp
 from typing import List
 from ..domain.Entities.PokemonEntity import PokemonEntity
+from ..domain.Errors.PokemonNotFoundError import PokemonNotFoundError
 from ..domain.Interfaces.IPokemonRepository import IPokemonRepository
 import requests
 from PIL import Image
@@ -53,6 +54,8 @@ class APIPokemonRepository(IPokemonRepository):
 
     def __get_url_sync(self, url):
         response = requests.get(url)
+        if not response:
+            raise PokemonNotFoundError("Pokemon not found")
         data = response.json()
         pokemon_image_response = requests.get(data['sprites']['front_default'])
         pokemon_image = Image.open(BytesIO(pokemon_image_response.content))
