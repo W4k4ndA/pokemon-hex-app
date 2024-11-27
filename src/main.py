@@ -1,10 +1,7 @@
 #!/usr/bin/python3
-import asyncio
-import tkinter as tk
-import tkinter.ttk as ttk
-import guiui as baseui
+import libs.Pokemon.infrastructure.guiui as baseui
 from libs.Pokemon.infrastructure.TKinterPokemonController import TKinterPokemonController
-from PIL import Image, ImageTk
+from PIL import ImageTk
 
 
 class PokemonGui(baseui.PokemonGUIUI):
