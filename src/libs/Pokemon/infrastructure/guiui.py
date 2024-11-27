@@ -1,10 +1,26 @@
 #!/usr/bin/python3
 import tkinter as tk
 import tkinter.ttk as ttk
+from PIL import ImageTk, Image
+from libs.Pokemon.infrastructure.TKinterPokemonController import TKinterPokemonController
 
 
 class PokemonGUIUI:
     def __init__(self, master=None):
+        """
+        Initializes a PokemonGUIUI instance.
+        It builds the GUI with all the widgets and sets up the event handlers.
+
+        Args:
+            master (tk.Tk): The toplevel widget to use as master.
+
+        Attributes:
+            __controller (TKinterPokemonController): The controller to use for the GUI.
+            mainwindow (tk.Tk): The main window of the GUI.
+
+        """
+        self.__controller = TKinterPokemonController()
+
         # build ui
         toplevel1 = tk.Tk() if master is None else tk.Toplevel(master)
         toplevel1.configure(background="red", height=200, width=200)
@@ -96,13 +112,75 @@ class PokemonGUIUI:
         self.mainwindow = toplevel1
 
     def run(self):
+        """
+        Starts the main event loop of the GUI.
+
+        This method starts the main event loop of the GUI. The GUI will not appear
+        on the screen until this method is called. The method does not return until
+        the user closes the GUI.
+
+        """
+        #
         self.mainwindow.mainloop()
 
+        # User Defined methods
+    # use the use case via TKinerPokemonController's __controller instance
     def pokemon_get_by_name(self):
-        pass
+        """
+        Retrieves a PokemonEntity instance by its name from the repository via the
+        controller instance and displays its data in the GUI.
 
+        This method retrieves a PokemonEntity instance by its name from the repository
+        via the controller instance and displays its data in the GUI. The method does
+        not return any value.
+
+        """
+        name = self.entry_nombre.get()
+        pokemon = self.__controller.get_pokemon_by_name(name)
+        self.__display_pokemon_data(pokemon)
+
+    # use the use case via TKinerPokemonController's __controller instance
     def pokemon_get_by_id(self):
-        pass
+        """
+        Retrieves a PokemonEntity instance by its id from the repository via the
+        controller instance and displays its data in the GUI.
+
+        This method retrieves a PokemonEntity instance by its id from the repository
+        via the controller instance and displays its data in the GUI. The method does
+        not return any value.
+        """
+        id = int(self.entry_id.get())
+        pokemon = self.__controller.get_pokemon_by_id(id)
+        self.__display_pokemon_data(pokemon)
+
+        # Helper method for display the pokemon on the data visualizator (text and image)
+    def __display_pokemon_data(self, pokemon):
+        """
+        Displays the data and image of a given PokemonEntity instance in the GUI.
+
+        This method formats the Pokemon's attributes into a string and sets it to 
+        a text variable to be displayed in the GUI. It also processes and displays 
+        the Pokemon's image.
+
+        Parameters:
+        pokemon (PokemonEntity): The PokemonEntity instance containing the data 
+        and image to be displayed.
+        """
+        text = "Nombre: %s\n\nTipo: %s\n\nPeso: %s\n\nHabilidades: %s" % (
+            pokemon.name, pokemon.type, pokemon.weight, pokemon.abilities)
+        self.info_text.set("")
+        self.info_text.set(text)
+
+        pokemon_image = Image.open(pokemon.image_bytearray)
+        pokemon_image = pokemon_image.resize((200, 200))
+
+        image_data = pokemon_image
+
+        image_tk = ImageTk.PhotoImage(image_data, size=(100, 100))
+
+        self.img_data.delete("all")
+        self.img_data.create_image(130, 150, image=image_tk)
+        self.img_data.image = image_tk
 
 
 if __name__ == "__main__":

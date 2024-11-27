@@ -1,38 +1,30 @@
 #!/usr/bin/python3
 import libs.Pokemon.infrastructure.guiui as baseui
-from libs.Pokemon.infrastructure.TKinterPokemonController import TKinterPokemonController
-from PIL import ImageTk
+
+"""This code serves as the entry point for the application. It initializes and runs a graphical user
+interface (GUI) for interacting with Pokémon data. The application is designed using a hexagonal 
+architecture, ensuring that each layer and class is responsible for a specific part of the 
+application's functionality. 
+
+The `PokemonGui` class extends `PokemonGUIUI`, which is a GUI component built using Tkinter. This class
+is responsible for displaying the interface and handling user interactions. It delegates retrieving and
+displaying Pokémon data to the `TKinterPokemonController`, which acts as an intermediary between the
+GUI and the application's business logic.
+
+The controller accesses the Pokémon data through a service container, which provides use case classes 
+like `GetPokemonByName` and `GetPokemonById`. These use cases interact with the `APIPokemonRepository`,
+a repository class responsible for fetching data from an external API (PokeAPI in this case).
+
+This separation of concerns allows each layer to focus on its designated responsibilities, promoting a 
+clean and maintainable codebase. The GUI layer manages user interaction, the controller handles 
+communication between the UI and the business logic, and the repository layer deals with data retrieval
+and persistence.
+"""
 
 
 class PokemonGui(baseui.PokemonGUIUI):
     def __init__(self, master=None):
-        self.__controller = TKinterPokemonController()
         super().__init__(master)
-
-    def pokemon_get_by_name(self):
-        name = self.entry_nombre.get()
-        pokemon = self.__controller.get_pokemon_by_name(name)
-        self.__display_pokemon_data(pokemon)
-
-    def pokemon_get_by_id(self):
-        id = int(self.entry_id.get())
-        pokemon = self.__controller.get_pokemon_by_id(id)
-        self.__display_pokemon_data(pokemon)
-
-    def __display_pokemon_data(self, pokemon):
-        text = "Nombre: %s\n\nTipo: %s\n\nPeso: %s\n\nHabilidades: %s" % (
-            pokemon.name, pokemon.type, pokemon.weight, pokemon.abilities)
-        self.info_text.set("")
-        self.info_text.set(text)
-
-        pokemon.image_bytearray = pokemon.image_bytearray.resize((200, 200))
-        image_data = pokemon.image_bytearray
-
-        image_tk = ImageTk.PhotoImage(image_data, size=(100, 100))
-
-        self.img_data.delete("all")
-        self.img_data.create_image(130, 150, image=image_tk)
-        self.img_data.image = image_tk
 
 
 if __name__ == "__main__":
